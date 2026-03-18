@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Oswald:wght@500;600;700&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-theme-pink: #e9008c;
+  --color-theme-cyan: #00d2d3;
+  --color-theme-yellow: #ffdd00;
+
+  --font-heading: 'Oswald', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
