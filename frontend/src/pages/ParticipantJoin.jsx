@@ -31,12 +31,21 @@ function ParticipantJoin() {
     };
   }, [navigate]);
 
-  const handleJoin = (e) => {
+  const handleJoin = async (e) => {
     e.preventDefault();
     if (!roomCode || !name) {
       setError('Please fill in all fields');
       return;
     }
+
+    try {
+      if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+        await document.documentElement.requestFullscreen();
+      }
+    } catch (err) {
+      console.log('Fullscreen request failed or was denied by the browser:', err);
+    }
+
     socket.emit('join_game', { roomCode, name, teamId });
   };
 
