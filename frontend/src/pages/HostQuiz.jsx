@@ -274,19 +274,17 @@ function HostQuiz() {
         </div>
       </div>
       
-      {timer === 0 && (
-        <div className="z-10 flex justify-center mt-12 mb-4">
-           <button 
-            onClick={handleNext}
-            className="group flex items-center space-x-4 bg-white/20 hover:bg-white/30 backdrop-blur-xl px-12 py-5 rounded-[2rem] border border-white/30 font-heading font-black text-2xl uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-xl"
-          >
-            <span>Next Question</span>
-            <div className="w-8 h-8 rounded-full bg-white text-[#0a1b3f] flex items-center justify-center group-hover:translate-x-2 transition-transform">
-              &rarr;
-            </div>
-          </button>
-        </div>
-      )}
+      <div className="z-10 flex justify-center mt-12 mb-4">
+        <button 
+          onClick={handleNext}
+          className="group flex items-center space-x-4 bg-white/10 hover:bg-white/20 backdrop-blur-xl px-10 py-4 md:px-12 md:py-5 rounded-3xl md:rounded-[2rem] border border-white/20 hover:border-white/40 font-heading font-black text-xl md:text-2xl uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-xl"
+        >
+          <span>{timer > 0 ? "Skip to Next Question" : "Next Question"}</span>
+          <div className="w-8 h-8 rounded-full bg-white text-[#0a1b3f] flex items-center justify-center group-hover:translate-x-2 transition-transform">
+            &rarr;
+          </div>
+        </button>
+      </div>
     </div>
   );
 }
