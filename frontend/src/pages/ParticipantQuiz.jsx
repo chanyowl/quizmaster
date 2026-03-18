@@ -2,6 +2,14 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { socket } from '../socket';
 
+const getParticipantFontSize = (text) => {
+  if (!text) return "text-xl md:text-2xl";
+  const len = text.length;
+  if (len < 60) return "text-xl md:text-2xl";
+  if (len < 120) return "text-lg md:text-xl";
+  return "text-base md:text-lg";
+};
+
 function ParticipantQuiz() {
   const navigate = useNavigate();
   const [gameState, setGameState] = useState('waiting'); // waiting, questioning, answered, over
@@ -149,7 +157,7 @@ function ParticipantQuiz() {
         <div className="bg-white/10 p-6 rounded-[2rem] border border-white/20 shadow-2xl relative overflow-hidden backdrop-blur-xl">
           <div className="absolute top-0 left-0 w-2 h-full bg-theme-yellow"></div>
           <p className="text-theme-yellow text-sm font-heading font-bold uppercase tracking-widest mb-3 opacity-90 drop-shadow-md">Current Question</p>
-          <h1 className="text-xl md:text-2xl font-bold font-body leading-snug text-white">
+          <h1 className={`font-bold font-body leading-snug text-white ${getParticipantFontSize(currentQuestion?.text)}`}>
             {currentQuestion?.text || "Waiting for question..."}
           </h1>
         </div>

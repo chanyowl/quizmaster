@@ -3,6 +3,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Timer, UserCheck, Trophy } from 'lucide-react';
 import { socket } from '../socket';
 
+const getQuestionFontSize = (text) => {
+  if (!text) return "text-5xl md:text-6xl lg:text-7xl";
+  const len = text.length;
+  if (len < 40) return "text-5xl md:text-6xl lg:text-7xl";
+  if (len < 80) return "text-4xl md:text-5xl lg:text-6xl";
+  if (len < 150) return "text-3xl md:text-4xl lg:text-5xl";
+  return "text-2xl md:text-3xl lg:text-4xl";
+};
+
 function HostQuiz() {
   const navigate = useNavigate();
   const { roomCode } = useParams();
@@ -240,7 +249,7 @@ function HostQuiz() {
       </div>
 
       <div className="z-10 flex-1 flex flex-col items-center justify-center space-y-16">
-        <h2 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-center leading-tight max-w-6xl drop-shadow-xl text-white">
+        <h2 className={`font-heading font-bold text-center leading-tight max-w-6xl drop-shadow-xl text-white px-4 ${getQuestionFontSize(currentQuestion.text)}`}>
           {currentQuestion.text}
         </h2>
         
