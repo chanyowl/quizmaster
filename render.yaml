@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: quizmaster-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+
+  - type: web
+    name: quizmaster-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: quizmaster-backend
+          envVarKey: RENDER_EXTERNAL_URL
