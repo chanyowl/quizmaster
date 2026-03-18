@@ -39,10 +39,10 @@ function FullScreenButton() {
   return (
     <button
       onClick={toggleFullScreen}
-      className="fixed bottom-6 right-6 z-[100] p-4 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.3)] border border-white/20 text-white transition-all hover:scale-110 active:scale-95 group"
+      className="fixed bottom-4 right-4 z-[100] p-2 bg-transparent hover:bg-white/10 rounded-full text-white/30 hover:text-white/80 transition-all hover:scale-110 active:scale-95 group opacity-40 hover:opacity-100"
       title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
     >
-      {isFullscreen ? <Minimize size={28} /> : <Maximize size={28} />}
+      {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
     </button>
   );
 }
