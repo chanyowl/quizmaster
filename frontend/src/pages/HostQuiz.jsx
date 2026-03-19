@@ -35,7 +35,7 @@ function HostQuiz() {
 
     const syncState = () => {
       console.log('Syncing state for room:', roomCode);
-      socket.emit('request_game_data', { roomCode });
+      socket.emit('request_game_data', { roomCode, isHost: true });
     };
 
     socket.on('room_info', ({ totalQuestions: tq }) => {

@@ -165,8 +165,8 @@ io.on('connection', (socket) => {
   });
 
   // Re-sync game data (to fix race conditions or rejoins)
-  socket.on('request_game_data', ({ roomCode }) => {
-    console.log(`Sync requested for room ${roomCode} by ${socket.id}`);
+  socket.on('request_game_data', ({ roomCode, isHost }) => {
+    console.log(`Sync requested for room ${roomCode} by ${socket.id}, isHost: ${isHost}`);
     if (!roomCode) {
       console.log('No roomCode provided in sync request');
       return;
@@ -175,8 +175,8 @@ io.on('connection', (socket) => {
     if (room) {
       socket.join(roomCode);
       
-      // Re-claim host status if they provide the code
-      if (!room.hostId || room.hostId !== socket.id) {
+      // Re-claim host status ONLY if they claim they are the host
+      if (isHost && (!room.hostId || room.hostId !== socket.id)) {
         console.log(`Re-claiming host status for ${socket.id} in ${roomCode}`);
         room.hostId = socket.id;
       }
@@ -202,6 +202,11 @@ io.on('connection', (socket) => {
           teamCount: room.teamCount,
           isStarted: false
         });
+
+        // Push the full participant list back to the host if they reconnected
+        if (isHost) {
+          socket.emit('participant_joined', room.participants);
+        }
       }
     } else {
       console.log(`Room ${roomCode} not found in sync request`);

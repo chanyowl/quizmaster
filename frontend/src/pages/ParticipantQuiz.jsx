@@ -39,7 +39,7 @@ function ParticipantQuiz() {
     });
 
     // Sync on mount
-    socket.emit('request_game_data', { roomCode: storedRoomCode });
+    socket.emit('request_game_data', { roomCode: storedRoomCode, isHost: false });
 
     socket.on('answer_confirmed', ({ isCorrect, score }) => {
       setIsCorrect(isCorrect);

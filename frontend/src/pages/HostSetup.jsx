@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Trash2, Save, Users, BookOpen, Download } from 'lucide-react';
 import { useEffect } from 'react';
-import { socket } from '../socket';
+import { socket, API_URL } from '../socket';
 
 function HostSetup() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ function HostSetup() {
 
   const fetchQuizzes = async () => {
     try {
-      const res = await fetch('http://localhost:3002/api/quizzes');
+      const res = await fetch(`${API_URL}/api/quizzes`);
       const data = await res.json();
       setSavedQuizzes(data);
     } catch (e) {
@@ -31,7 +31,7 @@ function HostSetup() {
   const saveQuiz = async () => {
     if (!quizTitle) return alert('Please enter a title for your quiz.');
     try {
-      const res = await fetch('http://localhost:3002/api/quizzes', {
+      const res = await fetch(`${API_URL}/api/quizzes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: quizTitle, questions, teamCount })

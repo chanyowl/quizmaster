@@ -1,0 +1,26 @@
+{
+  "title": "Chan saved sample",
+  "questions": [
+    {
+      "text": "Question 1",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "correctChoice": "A"
+    },
+    {
+      "text": "Question 2",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "correctChoice": "A"
+    }
+  ],
+  "teamCount": 2
+}

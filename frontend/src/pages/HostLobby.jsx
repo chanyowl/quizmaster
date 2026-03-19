@@ -18,7 +18,7 @@ function HostLobby() {
     }
 
     // Request room info to get teamCount
-    socket.emit('request_game_data', { roomCode });
+    socket.emit('request_game_data', { roomCode, isHost: true });
 
     socket.on('participant_joined', (newParticipants) => {
       setParticipants(newParticipants);
