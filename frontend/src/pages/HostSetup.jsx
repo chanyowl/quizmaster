@@ -106,7 +106,7 @@ function HostSetup() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8 relative z-10 animate-in fade-in duration-500">
+    <div className="max-w-5xl mx-auto p-6 space-y-8 relative z-10 animate-in fade-in duration-500">
       <div className="flex flex-col space-y-4 bg-white/10 backdrop-blur-md p-6 rounded-3xl border-2 border-white/20 shadow-xl">
         <div className="flex justify-between items-center">
           <h1 className="text-4xl font-heading font-bold flex items-center text-[#ffeb3b] uppercase tracking-wide">
