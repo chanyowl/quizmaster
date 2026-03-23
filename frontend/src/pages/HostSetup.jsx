@@ -109,14 +109,14 @@ function HostSetup() {
     <div className="max-w-5xl mx-auto p-6 space-y-8 relative z-10 animate-in fade-in duration-500">
       <div className="flex flex-col space-y-4 bg-white/10 backdrop-blur-md p-6 rounded-3xl border-2 border-white/20 shadow-xl">
         <div className="flex justify-between items-center">
-          <h1 className="text-4xl font-heading font-bold flex items-center text-[#ffeb3b] uppercase tracking-wide">
-            <BookOpen className="mr-3 text-white" />
+          <h1 className="text-4xl font-heading font-bold flex items-center text-[#ffeb3b] uppercase tracking-wide whitespace-nowrap shrink-0">
+            <BookOpen className="mr-3 text-white shrink-0" />
             Arena Setup
           </h1>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 overflow-x-auto pb-2 md:pb-0">
             <button 
               onClick={() => setShowLibrary(!showLibrary)}
-              className="bg-white/10 hover:bg-white/20 border border-white/20 px-4 py-2 rounded-xl font-bold flex items-center transition-colors"
+              className="bg-white/10 hover:bg-white/20 border border-white/20 px-4 py-2 rounded-xl font-bold flex shrink-0 items-center transition-colors whitespace-nowrap"
             >
               <Download size={20} className="mr-2" /> Library ({savedQuizzes.length})
             </button>
@@ -149,7 +149,7 @@ function HostSetup() {
             </div>
             <button 
               onClick={createQuiz}
-              className="flex items-center bg-[#00d2d3] hover:bg-[#00b0b0] text-slate-900 px-6 py-2 rounded-xl font-heading font-bold uppercase tracking-wider transition-colors shadow-lg"
+              className="flex shrink-0 items-center bg-[#00d2d3] hover:bg-[#00b0b0] text-slate-900 px-6 py-2 rounded-xl font-heading font-bold uppercase tracking-wider transition-colors shadow-lg whitespace-nowrap"
             >
               <Plus size={20} className="mr-2" /> Start Arena
             </button>
