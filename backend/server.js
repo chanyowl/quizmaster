@@ -29,12 +29,13 @@ io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
 
   // Host creates a game
-  socket.on('create_game', ({ questions, teamCount }) => {
+  socket.on('create_game', ({ questions, teamCount, timeLimit }) => {
     const roomCode = generateRoomCode();
     rooms[roomCode] = {
       hostId: socket.id,
       questions,
       teamCount: parseInt(teamCount),
+      timeLimit: parseInt(timeLimit) || 60,
       participants: [],
       currentQuestionIndex: -1,
       isStarted: false,
@@ -116,7 +117,8 @@ io.on('connection', (socket) => {
         question: room.questions[0],
         totalQuestions: room.questions.length,
         currentQuestionIndex: 0,
-        roomCode
+        roomCode,
+        timeLimit: room.timeLimit
       });
     }
   });
@@ -144,7 +146,8 @@ io.on('connection', (socket) => {
           question: room.questions[room.currentQuestionIndex],
           totalQuestions: room.questions.length,
           currentQuestionIndex: room.currentQuestionIndex,
-          roomCode
+          roomCode,
+          timeLimit: room.timeLimit
         });
         
         const totalAnswered = room.participants.filter(p => p.hasAnswered).length;
@@ -182,7 +185,8 @@ io.on('connection', (socket) => {
         console.log(`Sending next_question event for index ${room.currentQuestionIndex}`);
         io.to(roomCode).emit('next_question', {
           question: room.questions[room.currentQuestionIndex],
-          index: room.currentQuestionIndex
+          index: room.currentQuestionIndex,
+          timeLimit: room.timeLimit
         });
       } else {
         // Instead of immediate game_over, notify host that quiz is ended

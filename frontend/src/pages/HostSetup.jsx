@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Trash2, Save, Users, BookOpen, Download } from 'lucide-react';
+import { Plus, Trash2, Save, Users, BookOpen, Download, Timer } from 'lucide-react';
 import { useEffect } from 'react';
 import { socket, API_URL } from '../socket';
 
@@ -10,6 +10,7 @@ function HostSetup() {
     { text: '', options: ['', '', '', ''], correctChoice: 'A' }
   ]);
   const [teamCount, setTeamCount] = useState(2);
+  const [timeLimit, setTimeLimit] = useState(60);
   const [quizTitle, setQuizTitle] = useState('');
   const [savedQuizzes, setSavedQuizzes] = useState([]);
   const [showLibrary, setShowLibrary] = useState(false);
@@ -34,7 +35,7 @@ function HostSetup() {
   const saveQuiz = () => {
     if (!quizTitle) return alert('Please enter a title for your arena.');
     try {
-      const newQuiz = { title: quizTitle, questions, teamCount };
+      const newQuiz = { title: quizTitle, questions, teamCount, timeLimit: parseInt(timeLimit) };
       
       const existingData = localStorage.getItem('quizLibrary');
       let library = [];
@@ -63,6 +64,7 @@ function HostSetup() {
     setQuizTitle(quiz.title);
     setQuestions(quiz.questions);
     setTeamCount(quiz.teamCount || 2);
+    setTimeLimit(quiz.timeLimit || 60);
     setShowLibrary(false);
   };
 
@@ -95,10 +97,10 @@ function HostSetup() {
   const createQuiz = () => {
     if (!socket.connected) socket.connect();
     
-    socket.emit('create_game', { questions, teamCount });
+    socket.emit('create_game', { questions, teamCount, timeLimit: parseInt(timeLimit) });
     socket.once('game_created', ({ roomCode }) => {
       sessionStorage.setItem('roomCode', roomCode);
-      sessionStorage.setItem('quizData', JSON.stringify({ questions, teamCount }));
+      sessionStorage.setItem('quizData', JSON.stringify({ questions, teamCount, timeLimit: parseInt(timeLimit) }));
       navigate('/host/lobby');
     });
   };
@@ -118,17 +120,32 @@ function HostSetup() {
             >
               <Download size={20} className="mr-2" /> Library ({savedQuizzes.length})
             </button>
-            <div className="flex items-center bg-black/20 px-4 py-2 rounded-xl border border-white/10">
-              <Users size={20} className="text-[#00d2d3] mr-2" />
-              <span className="mr-2 font-bold text-white">Factions:</span>
-              <input 
-                type="number" 
-                min="2" 
-                max="10" 
-                value={teamCount} 
-                onChange={(e) => setTeamCount(e.target.value)}
-                className="bg-transparent w-12 text-center font-bold text-[#ffeb3b] outline-none text-xl"
-              />
+            <div className="flex items-center space-x-2 md:space-x-4">
+              <div className="flex items-center bg-black/20 px-3 md:px-4 py-2 rounded-xl border border-white/10">
+                <Users size={20} className="text-[#00d2d3] md:mr-2" />
+                <span className="mr-2 font-bold text-white hidden md:inline">Factions:</span>
+                <input 
+                  type="number" 
+                  min="2" 
+                  max="10" 
+                  value={teamCount} 
+                  onChange={(e) => setTeamCount(e.target.value)}
+                  className="bg-transparent w-8 md:w-10 text-center font-bold text-[#ffeb3b] outline-none text-xl"
+                />
+              </div>
+              <div className="flex items-center bg-black/20 px-3 md:px-4 py-2 rounded-xl border border-white/10">
+                <Timer size={20} className="text-[#e9008c] md:mr-2" />
+                <span className="mr-2 font-bold text-white hidden md:inline">Seconds:</span>
+                <input 
+                  type="number" 
+                  min="5" 
+                  max="300"
+                  step="5"
+                  value={timeLimit} 
+                  onChange={(e) => setTimeLimit(e.target.value)}
+                  className="bg-transparent w-10 md:w-12 text-center font-bold text-[#ffeb3b] outline-none text-xl"
+                />
+              </div>
             </div>
             <button 
               onClick={createQuiz}

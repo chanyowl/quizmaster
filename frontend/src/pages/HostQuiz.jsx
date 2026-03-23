@@ -21,6 +21,7 @@ function HostQuiz() {
   const [timer, setTimer] = useState(60);
   const [answeredCount, setAnsweredCount] = useState(0);
   const [totalParticipants, setTotalParticipants] = useState(0);
+  const [timeLimit, setTimeLimit] = useState(60);
   const [gameOver, setGameOver] = useState(false);
   const [quizEnded, setQuizEnded] = useState(false);
   const [results, setResults] = useState(null);
@@ -43,27 +44,31 @@ function HostQuiz() {
       setTotalQuestions(tq);
     });
 
-    socket.on('game_started', ({ question, totalQuestions, currentQuestionIndex }) => {
+    socket.on('game_started', ({ question, totalQuestions, currentQuestionIndex, timeLimit: customTimeLimit }) => {
       console.log('Game started received', currentQuestionIndex);
       if (qIndexRef.current === currentQuestionIndex) return; // Already on this question
       
+      const newTimeLimit = customTimeLimit || 60;
       qIndexRef.current = currentQuestionIndex;
       setCurrentQuestion(question);
       setTotalQuestions(totalQuestions);
       setQIndex(currentQuestionIndex);
-      setTimer(60);
+      setTimeLimit(newTimeLimit);
+      setTimer(newTimeLimit);
       setAnsweredCount(0);
       startTimer();
     });
 
-    socket.on('next_question', ({ question, index }) => {
+    socket.on('next_question', ({ question, index, timeLimit: customTimeLimit }) => {
       console.log('Next question received:', index);
       if (qIndexRef.current === index) return; // Already on this question
 
+      const newTimeLimit = customTimeLimit || 60;
       qIndexRef.current = index;
       setCurrentQuestion(question);
       setQIndex(index);
-      setTimer(60);
+      setTimeLimit(newTimeLimit);
+      setTimer(newTimeLimit);
       setAnsweredCount(0);
       isTransitioningRef.current = false; // Reset lock on new question
       startTimer();
@@ -367,10 +372,10 @@ function HostQuiz() {
       <div className="z-10 flex justify-center mt-12 mb-4">
         <button 
           onClick={handleNext}
-          className="group flex items-center space-x-4 bg-white/10 hover:bg-white/20 backdrop-blur-xl px-10 py-4 md:px-12 md:py-5 rounded-3xl md:rounded-[2rem] border border-white/20 hover:border-white/40 font-heading font-black text-xl md:text-2xl uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-xl"
+          className="group flex items-center space-x-2 bg-white/5 hover:bg-white/10 px-6 py-2 rounded-2xl border border-white/10 hover:border-white/30 text-white/50 hover:text-white/90 font-heading font-medium text-sm md:text-base uppercase tracking-wider transition-all"
         >
           <span>{timer > 0 ? "Skip to Next Question" : "Next Question"}</span>
-          <div className="w-8 h-8 rounded-full bg-white text-[#0a1b3f] flex items-center justify-center group-hover:translate-x-2 transition-transform">
+          <div className="text-white/50 group-hover:text-white/90 group-hover:translate-x-1 transition-all">
             &rarr;
           </div>
         </button>
