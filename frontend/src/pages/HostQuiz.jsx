@@ -352,9 +352,7 @@ function HostQuiz() {
           {['A', 'B', 'C', 'D'].map((choice, idx) => (
             <div 
               key={choice}
-              className={`flex items-center p-6 backdrop-blur-xl bg-white/5 border-2 rounded-[2rem] transition-all duration-300 ${
-                timer === 0 && currentQuestion.correctChoice === choice ? 'border-theme-yellow bg-theme-yellow/10 scale-[1.03] shadow-[0_0_40px_rgba(255,221,0,0.3)]' : 'border-white/10 hover:bg-white/10 hover:scale-[1.02]'
-              } ${timer === 0 && currentQuestion.correctChoice !== choice ? 'opacity-40 grayscale' : ''}`}
+              className={`flex items-center p-6 backdrop-blur-xl bg-white/5 border-2 rounded-[2rem] transition-all duration-300 border-white/10 hover:bg-white/10 hover:scale-[1.02]`}
             >
               <div className={`w-16 h-16 shrink-0 flex items-center justify-center rounded-[1.25rem] font-heading font-black text-3xl mr-6 shadow-lg ${
                 choice === 'A' ? 'bg-theme-pink text-white' : 
