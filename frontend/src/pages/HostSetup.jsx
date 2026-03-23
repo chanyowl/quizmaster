@@ -18,30 +18,44 @@ function HostSetup() {
     fetchQuizzes();
   }, []);
 
-  const fetchQuizzes = async () => {
+  const fetchQuizzes = () => {
     try {
-      const res = await fetch(`${API_URL}/api/quizzes`);
-      const data = await res.json();
-      setSavedQuizzes(data);
+      const data = localStorage.getItem('quizLibrary');
+      if (data) {
+        setSavedQuizzes(JSON.parse(data));
+      } else {
+        setSavedQuizzes([]);
+      }
     } catch (e) {
-      console.error('Failed to fetch quizzes:', e);
+      console.error('Failed to fetch quizzes from localStorage:', e);
     }
   };
 
-  const saveQuiz = async () => {
-    if (!quizTitle) return alert('Please enter a title for your quiz.');
+  const saveQuiz = () => {
+    if (!quizTitle) return alert('Please enter a title for your arena.');
     try {
-      const res = await fetch(`${API_URL}/api/quizzes`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: quizTitle, questions, teamCount })
-      });
-      if (res.ok) {
-        alert('Quiz saved successfully!');
-        fetchQuizzes();
+      const newQuiz = { title: quizTitle, questions, teamCount };
+      
+      const existingData = localStorage.getItem('quizLibrary');
+      let library = [];
+      if (existingData) {
+        library = JSON.parse(existingData);
+        // Update existing quiz by title if it exists
+        const existingIndex = library.findIndex(q => q.title === quizTitle);
+        if (existingIndex >= 0) {
+          library[existingIndex] = newQuiz;
+        } else {
+          library.push(newQuiz);
+        }
+      } else {
+        library.push(newQuiz);
       }
+
+      localStorage.setItem('quizLibrary', JSON.stringify(library));
+      alert('Arena saved successfully to your Local Library!');
+      fetchQuizzes();
     } catch (e) {
-      console.error('Failed to save quiz:', e);
+      console.error('Failed to save quiz to localStorage:', e);
     }
   };
 

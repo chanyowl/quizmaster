@@ -9,15 +9,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const fs = require('fs');
-const path = require('path');
-const QUIZ_DIR = path.join(__dirname, 'quizzes');
-
-// Ensure quiz directory exists
-if (!fs.existsSync(QUIZ_DIR)) {
-  fs.mkdirSync(QUIZ_DIR);
-}
-
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
@@ -33,49 +24,6 @@ const rooms = {};
 function generateRoomCode() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
-
-// REST API for Quiz Persistence
-app.post('/api/quizzes', (req, res) => {
-  const { title, questions, teamCount } = req.body;
-  if (!title || !questions) {
-    return res.status(400).json({ error: 'Title and questions are required' });
-  }
-
-  const filename = `${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.json`;
-  const filePath = path.join(QUIZ_DIR, filename);
-
-  const quizData = { title, questions, teamCount };
-  fs.writeFile(filePath, JSON.stringify(quizData, null, 2), (err) => {
-    if (err) {
-      console.error('Error saving quiz:', err);
-      return res.status(500).json({ error: 'Failed to save quiz' });
-    }
-    res.json({ message: 'Quiz saved successfully', filename });
-  });
-});
-
-app.get('/api/quizzes', (req, res) => {
-  fs.readdir(QUIZ_DIR, (err, files) => {
-    if (err) {
-      console.error('Error reading quizzes:', err);
-      return res.status(500).json({ error: 'Failed to list quizzes' });
-    }
-
-    const quizzes = files
-      .filter(f => f.endsWith('.json'))
-      .map(f => {
-        try {
-          const content = fs.readFileSync(path.join(QUIZ_DIR, f), 'utf8');
-          return JSON.parse(content);
-        } catch (e) {
-          return null;
-        }
-      })
-      .filter(q => q !== null);
-
-    res.json(quizzes);
-  });
-});
 
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
