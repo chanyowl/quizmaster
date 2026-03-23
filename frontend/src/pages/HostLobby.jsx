@@ -33,9 +33,17 @@ function HostLobby() {
        if (tc) setTeamCount(tc);
     });
 
+    const handleConnect = () => {
+      console.log('Socket reconnected in lobby, forcing sync...');
+      socket.emit('request_game_data', { roomCode, isHost: true });
+    };
+    socket.on('connect', handleConnect);
+
     return () => {
       socket.off('participant_joined');
-      socket.off('room_info'); // Add cleanup for room_info listener
+      socket.off('room_info');
+      socket.off('game_started');
+      socket.off('connect', handleConnect);
     };
   }, [navigate]);
 
@@ -99,8 +107,8 @@ function HostLobby() {
               </h3>
               
               <div className="grid grid-cols-2 gap-4">
-                {participants.filter(p => parseInt(p.teamId) === teamId).map((p, idx) => (
-                  <div key={idx} className="bg-white/10 p-4 rounded-2xl border border-white/5 flex items-center space-x-4 animate-in fade-in slide-in-from-right-4 duration-300 backdrop-blur-sm">
+                {participants.filter(p => parseInt(p.teamId) === teamId).map((p) => (
+                  <div key={p.id} className="bg-white/10 p-4 rounded-2xl border border-white/5 flex items-center space-x-4 animate-in fade-in slide-in-from-right-4 duration-300 backdrop-blur-sm">
                     <div className="w-12 h-12 bg-gradient-to-br from-theme-cyan to-blue-600 rounded-full flex items-center justify-center font-heading font-bold text-2xl text-white shadow-lg">
                       {p.name[0].toUpperCase()}
                     </div>

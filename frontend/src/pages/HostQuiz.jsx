@@ -78,6 +78,8 @@ function HostQuiz() {
       }
     }, 2000);
 
+    socket.on('connect', syncState);
+
     socket.on('answer_received', ({ totalAnswered, totalParticipants }) => {
       setAnsweredCount(totalAnswered);
       setTotalParticipants(totalParticipants);
@@ -101,6 +103,7 @@ function HostQuiz() {
       socket.off('game_over');
       socket.off('room_info');
       socket.off('quiz_ended');
+      socket.off('connect', syncState);
       clearInterval(timerRef.current);
       clearInterval(syncInterval);
     };
