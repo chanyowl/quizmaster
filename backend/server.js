@@ -110,27 +110,35 @@ io.on('connection', (socket) => {
       socket.emit('error', 'Room not found');
       return;
     }
-    if (room.isStarted) {
+
+    const existingIndex = room.participants.findIndex(p => p.name === name && p.teamId === parseInt(teamId));
+    
+    if (room.isStarted && existingIndex === -1) {
       socket.emit('error', 'Game already started');
       return;
     }
 
-    const participant = {
-      id: socket.id,
-      name,
-      teamId: parseInt(teamId),
-      score: 0,
-      hasAnswered: false
-    };
+    if (existingIndex !== -1) {
+      room.participants[existingIndex].id = socket.id;
+      console.log(`User ${name} re-claimed their spot in room ${roomCode}`);
+    } else {
+      const participant = {
+        id: socket.id,
+        name,
+        teamId: parseInt(teamId),
+        score: 0,
+        hasAnswered: false
+      };
+      room.participants.push(participant);
+    }
     
-    room.participants.push(participant);
     socket.join(roomCode);
     
-    // Notify host about new participant
+    // Notify host about updated participant list
     io.to(room.hostId).emit('participant_joined', room.participants);
     
     socket.emit('joined_successfully', { roomCode, name, teamId });
-    console.log(`User ${name} joined room ${roomCode} on team ${teamId}`);
+    console.log(`User ${name} joined/rejoined room ${roomCode} on team ${teamId}`);
   });
 
   // Join room manually if needed

@@ -41,6 +41,17 @@ function ParticipantQuiz() {
     // Sync on mount
     socket.emit('request_game_data', { roomCode: storedRoomCode, isHost: false });
 
+    const handleConnect = () => {
+      const storedName = sessionStorage.getItem('name');
+      const storedTeamId = sessionStorage.getItem('teamId');
+      if (storedName && storedTeamId && storedRoomCode) {
+        console.log('Socket reconnected in participant, forcing sync...');
+        socket.emit('join_game', { roomCode: storedRoomCode, name: storedName, teamId: storedTeamId });
+        socket.emit('request_game_data', { roomCode: storedRoomCode, isHost: false });
+      }
+    };
+    socket.on('connect', handleConnect);
+
     socket.on('answer_confirmed', ({ isCorrect, score }) => {
       setIsCorrect(isCorrect);
       setScore(score);
@@ -61,6 +72,7 @@ function ParticipantQuiz() {
       socket.off('answer_confirmed');
       socket.off('game_over');
       socket.off('waiting_for_results');
+      socket.off('connect', handleConnect);
     };
   }, [navigate]);
 
