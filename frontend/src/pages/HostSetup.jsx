@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Plus, Trash2, Save, Users, BookOpen, Download, Timer } from 'lucide-react';
 import { useEffect } from 'react';
 import { socket, API_URL } from '../socket';
+import { HARDCODED_QUIZ } from '../data/hardcoded_quiz';
 
 function HostSetup() {
   const navigate = useNavigate();
@@ -22,11 +23,18 @@ function HostSetup() {
   const fetchQuizzes = () => {
     try {
       const data = localStorage.getItem('quizLibrary');
+      let library = [];
       if (data) {
-        setSavedQuizzes(JSON.parse(data));
-      } else {
-        setSavedQuizzes([]);
+        library = JSON.parse(data);
       }
+      
+      // Inject Hardcoded Quiz from the PDF
+      if (!library.find(q => q.title === HARDCODED_QUIZ.title)) {
+        library.push(HARDCODED_QUIZ);
+        localStorage.setItem('quizLibrary', JSON.stringify(library));
+      }
+      
+      setSavedQuizzes(library);
     } catch (e) {
       console.error('Failed to fetch quizzes from localStorage:', e);
     }
