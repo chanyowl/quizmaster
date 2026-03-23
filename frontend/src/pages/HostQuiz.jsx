@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Timer, UserCheck, Trophy } from 'lucide-react';
+import { Timer, UserCheck, Trophy, ClipboardList, X } from 'lucide-react';
 import { socket } from '../socket';
 
 const getQuestionFontSize = (text) => {
@@ -24,6 +24,7 @@ function HostQuiz() {
   const [gameOver, setGameOver] = useState(false);
   const [quizEnded, setQuizEnded] = useState(false);
   const [results, setResults] = useState(null);
+  const [showAudit, setShowAudit] = useState(false);
   
   const timerRef = useRef(null);
   const qIndexRef = useRef(-1); // To track if we've already started this question
@@ -146,9 +147,18 @@ function HostQuiz() {
           <h1 className="text-7xl font-heading font-black text-white uppercase tracking-tighter drop-shadow-lg">Quiz Over!</h1>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl z-10">
+        <div className="w-full max-w-4xl z-10">
           <div className="backdrop-blur-xl bg-white/10 p-10 rounded-[2.5rem] border border-white/20 shadow-2xl">
-            <h2 className="text-3xl font-heading font-bold mb-8 text-theme-cyan uppercase tracking-wider flex items-center">Team Scores</h2>
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-3xl font-heading font-bold text-theme-cyan uppercase tracking-wider flex items-center">Team Scores</h2>
+              <button 
+                onClick={() => setShowAudit(true)}
+                className="flex items-center space-x-2 bg-theme-pink/20 hover:bg-theme-pink/40 text-theme-pink hover:text-white px-4 py-2 rounded-xl transition-all border border-theme-pink/30 font-bold uppercase tracking-widest text-sm"
+              >
+                <ClipboardList size={20} />
+                <span>Audit Records</span>
+              </button>
+            </div>
             <div className="space-y-4 text-left">
               {Object.entries(results.teamScores).sort((a,b) => b[1] - a[1]).map(([teamId, score], idx) => (
                 <div key={teamId} className="flex justify-between items-center bg-white/5 p-5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
@@ -161,25 +171,6 @@ function HostQuiz() {
               ))}
             </div>
           </div>
-          
-          <div className="backdrop-blur-xl bg-white/10 p-10 rounded-[2.5rem] border border-white/20 shadow-2xl">
-            <h2 className="text-3xl font-heading font-bold mb-8 text-theme-pink uppercase tracking-wider">Top Participants</h2>
-            <div className="space-y-4">
-              {results.participants.sort((a,b) => b.score - a.score).slice(0, 5).map((p, idx) => (
-                <div key={idx} className="flex justify-between items-center bg-white/5 p-5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors">
-                   <div className="flex items-center space-x-4">
-                    <span className={`w-10 h-10 flex items-center justify-center rounded-xl font-heading font-bold text-xl ${
-                      idx === 0 ? 'bg-theme-yellow text-[#0a1b3f] border-none' : 
-                      idx === 1 ? 'bg-slate-300 text-[#0a1b3f] border-none' : 
-                      idx === 2 ? 'bg-amber-600 text-white border-none' : 'bg-white/10 text-white/50 border border-white/10'
-                    }`}>#{idx+1}</span>
-                    <span className="font-heading font-bold text-xl">{p.name} <span className="text-sm text-theme-cyan/50 ml-2">(Team {p.teamId})</span></span>
-                   </div>
-                  <span className="text-3xl font-heading font-black text-theme-cyan">{p.score} <span className="text-sm text-white/50">pts</span></span>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
         
         <button 
@@ -188,6 +179,38 @@ function HostQuiz() {
         >
           Back to Home
         </button>
+
+        {/* Audit Modal */}
+        {showAudit && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-8 bg-black/60 backdrop-blur-sm">
+            <div className="bg-[#0a1b3f] border border-white/20 rounded-3xl w-full max-w-4xl max-h-[80vh] flex flex-col shadow-2xl">
+              <div className="flex justify-between items-center p-6 border-b border-white/10">
+                <h2 className="text-2xl font-heading font-bold text-theme-yellow flex items-center">
+                  <ClipboardList className="mr-3" /> Individual Audit Records
+                </h2>
+                <button onClick={() => setShowAudit(false)} className="text-white/50 hover:text-white transition-colors">
+                  <X size={32} />
+                </button>
+              </div>
+              <div className="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {results.participants.sort((a,b) => b.score - a.score).map((p, idx) => (
+                    <div key={idx} className="flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/10">
+                      <div className="flex items-center space-x-3">
+                        <span className="text-white/50 font-heading font-bold w-6">#{idx+1}</span>
+                        <div>
+                          <p className="font-heading font-bold text-lg">{p.name}</p>
+                          <p className="text-xs text-theme-cyan uppercase tracking-wider">Team {p.teamId}</p>
+                        </div>
+                      </div>
+                      <span className="font-heading font-black text-xl text-theme-pink">{p.score} pts</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
