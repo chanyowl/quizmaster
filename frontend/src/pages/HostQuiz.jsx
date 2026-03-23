@@ -137,7 +137,47 @@ function HostQuiz() {
 
   if (gameOver) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-12 overflow-hidden relative">
+      <div className="min-h-screen flex flex-col items-center justify-center p-12 overflow-hidden relative print:bg-white print:p-0 print:block">
+        {/* Printable Audit Record */}
+        <div className="hidden print:block w-full text-black p-8 font-body">
+          <h1 className="text-3xl font-bold mb-2">Quiz Audit Record: {roomCode}</h1>
+          <p className="text-gray-500 mb-6">Generated on {new Date().toLocaleDateString()} {new Date().toLocaleTimeString()}</p>
+          
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="border-b-2 border-gray-300 bg-gray-50">
+                <th className="py-3 px-4">Rank</th>
+                <th className="py-3 px-4">Participant</th>
+                <th className="py-3 px-4 text-center">Team</th>
+                <th className="py-3 px-4 text-center">Score</th>
+                {Array.from({ length: totalQuestions }).map((_, i) => (
+                  <th key={i} className="py-3 px-2 text-center text-xs">Q{i+1}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {results.participants.sort((a,b) => b.score - a.score).map((p, idx) => (
+                <tr key={idx} className="border-b border-gray-200">
+                  <td className="py-2 px-4 font-bold text-gray-700">{idx + 1}</td>
+                  <td className="py-2 px-4 font-medium">{p.name}</td>
+                  <td className="py-2 px-4 text-center text-gray-600">{p.teamId}</td>
+                  <td className="py-2 px-4 font-bold text-center">{p.score}</td>
+                  {Array.from({ length: totalQuestions }).map((_, qIdx) => {
+                    const ans = p.answers && p.answers[qIdx];
+                    return (
+                      <td key={qIdx} className={`py-2 px-2 text-center font-bold text-sm ${ans ? (ans.isCorrect ? 'text-green-600' : 'text-red-500') : 'text-gray-300'}`}>
+                        {ans ? ans.submitted : '-'}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Normal UI Wrapper (hidden in print) */}
+        <div className="print:hidden w-full flex flex-col items-center z-10">
         {/* Background decorations */}
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-theme-yellow/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-theme-pink/20 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/4 pointer-events-none" />
@@ -182,28 +222,51 @@ function HostQuiz() {
 
         {/* Audit Modal */}
         {showAudit && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-8 bg-black/60 backdrop-blur-sm">
-            <div className="bg-[#0a1b3f] border border-white/20 rounded-3xl w-full max-w-4xl max-h-[80vh] flex flex-col shadow-2xl">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-8 bg-black/60 backdrop-blur-sm print:hidden">
+            <div className="bg-[#0a1b3f] border border-white/20 rounded-3xl w-full max-w-5xl max-h-[85vh] flex flex-col shadow-2xl">
               <div className="flex justify-between items-center p-6 border-b border-white/10">
                 <h2 className="text-2xl font-heading font-bold text-theme-yellow flex items-center">
                   <ClipboardList className="mr-3" /> Individual Audit Records
                 </h2>
-                <button onClick={() => setShowAudit(false)} className="text-white/50 hover:text-white transition-colors">
-                  <X size={32} />
-                </button>
+                <div className="flex items-center space-x-4">
+                  <button 
+                    onClick={() => window.print()}
+                    className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-xl font-bold uppercase tracking-widest text-sm transition-colors border border-white/20"
+                  >
+                    Download PDF
+                  </button>
+                  <button onClick={() => setShowAudit(false)} className="text-white/50 hover:text-white transition-colors">
+                    <X size={32} />
+                  </button>
+                </div>
               </div>
               <div className="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-col-1 gap-4">
                   {results.participants.sort((a,b) => b.score - a.score).map((p, idx) => (
-                    <div key={idx} className="flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/10">
-                      <div className="flex items-center space-x-3">
-                        <span className="text-white/50 font-heading font-bold w-6">#{idx+1}</span>
-                        <div>
-                          <p className="font-heading font-bold text-lg">{p.name}</p>
-                          <p className="text-xs text-theme-cyan uppercase tracking-wider">Team {p.teamId}</p>
+                    <div key={idx} className="flex flex-col bg-white/5 p-5 rounded-xl border border-white/10">
+                      <div className="flex justify-between items-center mb-3">
+                        <div className="flex items-center space-x-3">
+                          <span className="text-white/50 font-heading font-bold w-6 text-xl">#{idx+1}</span>
+                          <div>
+                            <p className="font-heading font-bold text-xl">{p.name}</p>
+                            <p className="text-sm text-theme-cyan uppercase tracking-wider font-bold">Team {p.teamId}</p>
+                          </div>
                         </div>
+                        <span className="font-heading font-black text-2xl text-theme-pink">{p.score} pts</span>
                       </div>
-                      <span className="font-heading font-black text-xl text-theme-pink">{p.score} pts</span>
+                      <div className="grid grid-cols-10 gap-1 mt-2">
+                        {Array.from({ length: totalQuestions }).map((_, qIdx) => {
+                          const ans = p.answers && p.answers[qIdx];
+                          return (
+                            <div key={qIdx} className="flex flex-col items-center">
+                              <span className="text-[10px] text-white/40 mb-1">Q{qIdx+1}</span>
+                              <div className={`w-full h-8 flex items-center justify-center rounded text-sm font-bold ${ans ? (ans.isCorrect ? 'bg-green-500/20 text-green-400 border border-green-500/50' : 'bg-red-500/20 text-red-400 border border-red-500/50') : 'bg-white/5 text-white/20 border border-white/10'}`}>
+                                {ans ? ans.submitted : '-'}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -211,6 +274,7 @@ function HostQuiz() {
             </div>
           </div>
         )}
+        </div> {/* End wrapping visual layout */}
       </div>
     );
   }

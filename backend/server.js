@@ -127,7 +127,8 @@ io.on('connection', (socket) => {
         name,
         teamId: parseInt(teamId),
         score: 0,
-        hasAnswered: false
+        hasAnswered: false,
+        answers: {}
       };
       room.participants.push(participant);
     }
@@ -266,6 +267,12 @@ io.on('connection', (socket) => {
         const currentQuestion = room.questions[room.currentQuestionIndex];
         const isCorrect = answer === currentQuestion.correctChoice;
         
+        participant.answers[room.currentQuestionIndex] = {
+           submitted: answer,
+           isCorrect: isCorrect,
+           correctChoice: currentQuestion.correctChoice
+        };
+
         if (isCorrect) {
           participant.score += 10;
           room.teamScores[participant.teamId] = (room.teamScores[participant.teamId] || 0) + 10;
