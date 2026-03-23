@@ -106,21 +106,21 @@ function HostSetup() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6 space-y-8 relative z-10 animate-in fade-in duration-500">
-      <div className="flex flex-col space-y-4 bg-white/10 backdrop-blur-md p-6 rounded-3xl border-2 border-white/20 shadow-xl">
-        <div className="flex justify-between items-center">
+    <div className="w-full max-w-7xl mx-auto p-4 md:p-6 space-y-8 relative z-10 animate-in fade-in duration-500">
+      <div className="flex flex-col space-y-4 bg-white/10 backdrop-blur-md p-4 md:p-6 rounded-3xl border-2 border-white/20 shadow-xl">
+        <div className="flex flex-col xl:flex-row justify-between items-center gap-6">
           <h1 className="text-4xl font-heading font-bold flex items-center text-[#ffeb3b] uppercase tracking-wide whitespace-nowrap shrink-0">
             <BookOpen className="mr-3 text-white shrink-0" />
             Arena Setup
           </h1>
-          <div className="flex items-center space-x-4 overflow-x-auto pb-2 md:pb-0">
+          <div className="flex flex-wrap justify-center items-center gap-4">
             <button 
               onClick={() => setShowLibrary(!showLibrary)}
               className="bg-white/10 hover:bg-white/20 border border-white/20 px-4 py-2 rounded-xl font-bold flex shrink-0 items-center transition-colors whitespace-nowrap"
             >
               <Download size={20} className="mr-2" /> Library ({savedQuizzes.length})
             </button>
-            <div className="flex items-center space-x-2 md:space-x-4">
+            <div className="flex items-center gap-2 md:gap-4">
               <div className="flex items-center bg-black/20 px-3 md:px-4 py-2 rounded-xl border border-white/10">
                 <Users size={20} className="text-[#00d2d3] md:mr-2" />
                 <span className="mr-2 font-bold text-white hidden md:inline">Factions:</span>
