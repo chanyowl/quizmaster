@@ -123,11 +123,12 @@ function ParticipantQuiz() {
          <div className="absolute inset-0 bg-gradient-to-br from-[#0a1b3f] via-blue-900 to-indigo-900" />
         <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:24px_24px]" />
         
-        <div className="z-10 space-y-6">
-          <h1 className="text-5xl md:text-7xl font-heading font-black text-theme-yellow drop-shadow-[0_0_40px_rgba(255,221,0,0.6)] animate-pulse">GAME OVER!</h1>
-          <div className="bg-white/10 p-6 md:p-8 rounded-3xl md:rounded-[2rem] border border-white/20 shadow-2xl backdrop-blur-xl inline-block mt-6 md:mt-8">
-            <p className="text-xl md:text-2xl font-body text-white/80 mb-2">Final Score</p>
-            <p className="text-5xl md:text-6xl font-heading font-black text-theme-cyan">{score}</p>
+        <div className="z-10 space-y-6 text-center">
+          <h1 className="text-5xl md:text-7xl font-heading font-black text-theme-yellow drop-shadow-[0_0_40px_rgba(255,221,0,0.6)] animate-pulse mb-6">GAME OVER!</h1>
+          <div className="bg-white/10 px-8 py-6 rounded-3xl border border-white/20 shadow-xl backdrop-blur-xl mt-8">
+            <p className="text-xl md:text-2xl font-body text-white/90 leading-relaxed">
+              Thanks for playing! Check the <span className="font-bold text-theme-cyan">host screen</span> for the final results.
+            </p>
           </div>
         </div>
         
