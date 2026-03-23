@@ -166,7 +166,7 @@ function ParticipantQuiz() {
       </div>
 
       {/* Question Card */}
-      <div className="relative z-10 px-4 py-4 md:px-6 md:py-8 shrink-0">
+      <div className="relative z-10 px-4 py-2 md:px-6 md:py-8 shrink-0">
         <div className="bg-white/10 p-5 md:p-6 rounded-3xl md:rounded-[2rem] border border-white/20 shadow-xl relative overflow-hidden backdrop-blur-xl">
           <div className="absolute top-0 left-0 w-2 h-full bg-theme-yellow"></div>
           <p className="text-theme-yellow text-xs md:text-sm font-heading font-bold uppercase tracking-widest mb-2 opacity-90 drop-shadow-md">Current Question</p>
@@ -177,12 +177,12 @@ function ParticipantQuiz() {
       </div>
 
       {/* Choices Grid */}
-      <div className="relative z-10 flex-1 px-4 pb-6 md:px-6 md:pb-12 grid grid-cols-1 gap-3 md:gap-5 overflow-y-auto custom-scrollbar">
+      <div className="relative z-10 flex-1 px-4 pb-4 md:px-6 md:pb-12 grid grid-cols-1 gap-2 md:gap-5 overflow-y-auto custom-scrollbar">
         {['A', 'B', 'C', 'D'].map((choice, idx) => (
           <button 
             key={choice}
             onClick={() => submitAnswer(choice)}
-            className={`group relative overflow-hidden transition-all duration-200 rounded-3xl flex items-center p-3 md:p-6 text-left shadow-lg border-2 active:scale-95 ${
+            className={`group relative overflow-hidden transition-all duration-200 rounded-2xl md:rounded-3xl flex items-center p-2.5 md:p-6 text-left shadow-lg border-2 active:scale-95 ${
               choice === 'A' ? 'border-theme-pink bg-theme-pink/10 hover:bg-theme-pink/20 text-white' : 
               choice === 'B' ? 'border-theme-cyan bg-theme-cyan/10 hover:bg-theme-cyan/20 text-white' : 
               choice === 'C' ? 'border-theme-yellow bg-theme-yellow/10 hover:bg-theme-yellow/20 text-white' : 
@@ -190,7 +190,7 @@ function ParticipantQuiz() {
             }`}
           >
             {/* Visual Choice Indicator */}
-            <div className={`w-10 h-10 md:w-16 md:h-16 rounded-[1rem] flex items-center justify-center text-xl md:text-3xl font-heading font-black mr-4 md:mr-6 shrink-0 group-active:scale-95 transition-transform shadow-md ${
+            <div className={`w-8 h-8 md:w-16 md:h-16 rounded-xl md:rounded-[1rem] flex items-center justify-center text-lg md:text-3xl font-heading font-black mr-3 md:mr-6 shrink-0 group-active:scale-95 transition-transform shadow-md ${
               choice === 'A' ? 'bg-theme-pink text-white' : 
               choice === 'B' ? 'bg-theme-cyan text-[#0a1b3f]' : 
               choice === 'C' ? 'bg-theme-yellow text-[#0a1b3f]' : 'bg-green-400 text-[#0a1b3f]'
@@ -200,7 +200,7 @@ function ParticipantQuiz() {
 
             {/* Answer Text */}
             <div className="flex-1">
-              <span className="text-lg md:text-xl font-body font-bold leading-snug block drop-shadow-sm">
+              <span className="text-base md:text-xl font-body font-bold leading-tight block drop-shadow-sm">
                 {currentQuestion?.options[idx] || "..."}
               </span>
             </div>
