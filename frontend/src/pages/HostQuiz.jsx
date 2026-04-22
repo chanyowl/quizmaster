@@ -140,6 +140,24 @@ function HostQuiz() {
     socket.emit('reveal_results', { roomCode });
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Typical presentation clicker "Next" inputs
+      if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) {
+        e.preventDefault();
+        // If the quiz is ended, let the clicker reveal results instead
+        if (quizEnded && !gameOver) {
+          revealResults();
+        } else if (!quizEnded && !gameOver) {
+          handleNext();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [roomCode, quizEnded, gameOver]);
+
   if (gameOver) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-12 overflow-hidden relative print:bg-white print:p-0 print:block">
