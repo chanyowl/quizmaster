@@ -4,6 +4,7 @@ import { Plus, Trash2, Save, Users, BookOpen, Download, Timer } from 'lucide-rea
 import { useEffect } from 'react';
 import { socket, API_URL } from '../socket';
 import { HARDCODED_QUIZ } from '../data/hardcoded_quiz';
+import { AIPO_QUIZ_BEE } from '../data/aipo_quiz_bee';
 
 function HostSetup() {
   const navigate = useNavigate();
@@ -31,6 +32,12 @@ function HostSetup() {
       // Inject Hardcoded Quiz from the PDF
       if (!library.find(q => q.title === HARDCODED_QUIZ.title)) {
         library.push(HARDCODED_QUIZ);
+        localStorage.setItem('quizLibrary', JSON.stringify(library));
+      }
+      
+      // Inject AIPO Quiz Bee
+      if (!library.find(q => q.title === AIPO_QUIZ_BEE.title)) {
+        library.push(AIPO_QUIZ_BEE);
         localStorage.setItem('quizLibrary', JSON.stringify(library));
       }
       

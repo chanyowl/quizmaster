@@ -1,0 +1,157 @@
+export const AIPO_QUIZ_BEE = {
+  "title": "AIPO Quiz Bee",
+  "teamCount": 2,
+  "timeLimit": 60,
+  "questions": [
+    {
+      "text": "What is the AIPO's mission?",
+      "options": [
+        "To be the leading IP hub in Southeast Asia by supporting student entrepreneurs",
+        "To promote nation-building by supporting ideation, protection, and commercialization of innovative works that address societal challenges",
+        "To facilitate partnerships between universities and private enterprises for innovation",
+        "To nurture sustainable innovations that meet society's needs"
+      ],
+      "correctChoice": "B"
+    },
+    {
+      "text": "What is the AIPO's vision?",
+      "options": [
+        "To promote nation-building through innovation and creativity",
+        "To commercialize Ateneo's research outputs for the benefit of Filipino society",
+        "Nurturing sustainable innovations that meet society's needs",
+        "To support researchers, startups, and entrepreneurs in protecting their innovations"
+      ],
+      "correctChoice": "C"
+    },
+    {
+      "text": "Which of the following correctly describes AIPO's organizational structure?",
+      "options": [
+        "The Director oversees four groups: ISG, PEG, CBIG, and Admin",
+        "Two Co-Directors jointly manage ISG, PEG, and CBIG separately",
+        "The Director and a Deputy Director together oversee ISG and CBIG",
+        "The Director oversees three groups: ISG, PEG, and CBIG"
+      ],
+      "correctChoice": "D"
+    },
+    {
+      "text": "How long is the standard probationary period for a newly hired employee?",
+      "options": [
+        "3 months",
+        "9 months",
+        "6 months",
+        "12 months"
+      ],
+      "correctChoice": "C"
+    },
+    {
+      "text": "What is the standard WFH entitlement for each employee per week?",
+      "options": [
+        "2 full days from Monday to Friday",
+        "1 full day from Monday to Friday, and a half-day on Saturdays",
+        "1.5 days, usable on any day from Monday to Saturday",
+        "1 full day on any day of the week including weekends"
+      ],
+      "correctChoice": "B"
+    },
+    {
+      "text": "On which day are ALL employees required to be physically present onsite?",
+      "options": [
+        "Wednesday",
+        "Friday",
+        "Tuesday",
+        "Monday"
+      ],
+      "correctChoice": "D"
+    },
+    {
+      "text": "If a holiday falls on a Monday, when is the plenary meeting rescheduled?",
+      "options": [
+        "The following Monday",
+        "It is cancelled for that week",
+        "Tuesday",
+        "Wednesday of the same week"
+      ],
+      "correctChoice": "C"
+    },
+    {
+      "text": "How many days in advance must an employee inform their supervisor about changes to their WFH schedule?",
+      "options": [
+        "Same day, before 8:00 AM",
+        "At least three days",
+        "At least one day",
+        "At least two days"
+      ],
+      "correctChoice": "D"
+    },
+    {
+      "text": "Which of the following is a valid reason for rendering overtime?",
+      "options": [
+        "Completing a backlog of personal tasks before a self-set deadline",
+        "Working beyond hours due to slow internet connection during WFH",
+        "Preparing materials for an office-organized event such as a workshop or conference",
+        "Extending work hours to compensate for a late start"
+      ],
+      "correctChoice": "C"
+    },
+    {
+      "text": "What qualifies overtime for an \"offset\"?",
+      "options": [
+        "Any overtime worked beyond one hour after dismissal time",
+        "Overtime reported to HR within 24 hours of being rendered",
+        "Overtime rendered during weekends and holidays only",
+        "Overtime that has prior written approval and proper documentation"
+      ],
+      "correctChoice": "D"
+    },
+    {
+      "text": "How many Sick Leave (SL) days are plantilla employees entitled to per year?",
+      "options": [
+        "10 days",
+        "12 days",
+        "20 days",
+        "15 days"
+      ],
+      "correctChoice": "D"
+    },
+    {
+      "text": "How many Emergency Leave (EL) days do plantilla employees receive?",
+      "options": [
+        "3 days",
+        "7 days",
+        "5 days",
+        "10 days"
+      ],
+      "correctChoice": "C"
+    },
+    {
+      "text": "How many Service Incentive Leave (SIL) days does a project-based employee on a 12-month contract receive?",
+      "options": [
+        "3 days",
+        "7 days",
+        "2 days",
+        "5 days"
+      ],
+      "correctChoice": "D"
+    },
+    {
+      "text": "An employee may be dismissed if they accumulate how many unexcused absences within 12 months?",
+      "options": [
+        "8 unexcused absences",
+        "10 unexcused absences",
+        "15 unexcused absences",
+        "12 unexcused absences"
+      ],
+      "correctChoice": "D"
+    },
+    {
+      "text": "Which of the following is explicitly prohibited under Office Behavior?",
+      "options": [
+        "Taking a lunch break outside the office premises",
+        "Discussing work concerns with a colleague during rest periods",
+        "Gambling on University premises",
+        "Using personal devices during non-working hours"
+      ],
+      "correctChoice": "C"
+    }
+  ]
+};
